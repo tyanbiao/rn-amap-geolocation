@@ -64,6 +64,19 @@ public class AMapGeolocationModule extends ReactContextBaseJavaModule implements
         if (options.hasKey("sensorEnable")) {
             option.setSensorEnable(options.getBoolean("sensorEnable"));
         }
+        if (options.hasKey("locationMode")) {
+            switch (options.getString("locationMode")) {
+                case "Hight_Accuracy":
+                    mLocationOption.setLocationMode(AMapLocationMode.Hight_Accuracy);
+                    break;
+                case "Battery_Saving":
+                    mLocationOption.setLocationMode(AMapLocationMode.Battery_Saving);
+                    break;
+                case "Device_Sensors":
+                    mLocationOption.setLocationMode(AMapLocationMode.Device_Sensors);
+                    break;                    
+            }
+        }
         locationClient.setLocationOption(option);
     }
 
@@ -104,6 +117,7 @@ public class AMapGeolocationModule extends ReactContextBaseJavaModule implements
                 map.putString("streetNumber", location.getStreetNum());
                 map.putString("adCode", location.getAdCode());
             }
+            map.putInt("locationType", location.getLocationType());
             return map;
         }
         return null;
