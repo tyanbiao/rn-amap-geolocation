@@ -1,10 +1,11 @@
-
 package com.tyanbiao.react.geolocation;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
+import com.amap.api.location.AMapLocationClientOption.AMapLocationPurpose;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -54,30 +55,31 @@ public class AMapGeolocationModule extends ReactContextBaseJavaModule implements
 
     @ReactMethod
     public void setOptions(ReadableMap options) {
-        AMapLocationClientOption option = new AMapLocationClientOption();
+        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         if (options.hasKey("interval")) {
-            option.setInterval(options.getInt("interval"));
+            mLocationOption.setInterval(options.getInt("interval"));
         }
         if (options.hasKey("reGeocode")) {
-            option.setNeedAddress(options.getBoolean("reGeocode"));
+            mLocationOption.setNeedAddress(options.getBoolean("reGeocode"));
         }
         if (options.hasKey("sensorEnable")) {
-            option.setSensorEnable(options.getBoolean("sensorEnable"));
+            mLocationOption.setSensorEnable(options.getBoolean("sensorEnable"));
         }
         if (options.hasKey("locationMode")) {
             switch (options.getString("locationMode")) {
-                case "Hight_Accuracy":
+                case "Hight_Accuracy" :
                     mLocationOption.setLocationMode(AMapLocationMode.Hight_Accuracy);
                     break;
-                case "Battery_Saving":
+                case "Battery_Saving" :
                     mLocationOption.setLocationMode(AMapLocationMode.Battery_Saving);
                     break;
-                case "Device_Sensors":
+                case "Device_Sensors" :
                     mLocationOption.setLocationMode(AMapLocationMode.Device_Sensors);
                     break;                    
             }
         }
-        locationClient.setLocationOption(option);
+        
+        locationClient.setLocationOption(mLocationOption);
     }
 
     @ReactMethod
@@ -118,6 +120,7 @@ public class AMapGeolocationModule extends ReactContextBaseJavaModule implements
                 map.putString("adCode", location.getAdCode());
             }
             map.putInt("locationType", location.getLocationType());
+            map.putInt("gpsStatus", location.getGpsAccuracyStatus());
             return map;
         }
         return null;
